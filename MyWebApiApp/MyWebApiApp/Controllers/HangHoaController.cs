@@ -2,15 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using MyWebApiApp.Models;
 using System.Reflection.Metadata.Ecma335;
-using static MyWebApiApp.Models.HangHoaVM;
 namespace MyWebApiApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class HangHoaController : ControllerBase
     {
-        public static List<HangHoa> hangHoas = new List<HangHoa>();
-
+        private static List<HangHoa> hangHoas = new List<HangHoa>();
         [HttpGet]
         public IActionResult GetAll()
         {
