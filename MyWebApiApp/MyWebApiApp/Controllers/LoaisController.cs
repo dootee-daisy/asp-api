@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyWebApiApp.Data;
 using MyWebApiApp.Models;
@@ -24,10 +25,17 @@ namespace MyWebApiApp.Controllers
         [HttpGet("{id}")]
         public IActionResult getById(int id)
         {
-            var loai = _context.Loais.SingleOrDefault(l => l.MaLoai == id);
-            return loai != null ? Ok(loai) : NotFound();
+            try
+            {
+                var loai = _context.Loais.SingleOrDefault(l => l.MaLoai == id);
+                return loai != null ? Ok(loai) : NotFound();
+            }catch
+            {
+                return BadRequest();
+            }
         }
         [HttpPost]
+        [Authorize]
         public IActionResult CreateNew(Models.LoaiModel model)
         {
             try
@@ -38,7 +46,7 @@ namespace MyWebApiApp.Controllers
                 };
                 _context.Add(model);
                 _context.SaveChanges();
-                return Ok(loai);
+                return StatusCode(StatusCodes.Status201Created, loai);
             }catch
             {
                 return BadRequest();
@@ -53,6 +61,18 @@ namespace MyWebApiApp.Controllers
             {
                 loai.TenLoai = model.TenLoai;
                 return NoContent();
+            }
+            return NotFound();
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteLoaiById(int id, Models.LoaiModel model)
+        {
+            var loai = _context.Loais.SingleOrDefault(l => l.MaLoai == id);
+            if (loai != null)
+            {
+                _context.Remove(loai);
+                _context.SaveChanges();
+                return StatusCode(StatusCodes.Status200OK);
             }
             return NotFound();
         }
