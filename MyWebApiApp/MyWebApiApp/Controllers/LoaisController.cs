@@ -28,11 +28,11 @@ namespace MyWebApiApp.Controllers
             return loai != null ? Ok(loai) : NotFound();
         }
         [HttpPost]
-        public IActionResult CreateNew(LoaiModel model)
+        public IActionResult CreateNew(Models.LoaiModel model)
         {
             try
             {
-                var loai = new Loai
+                var loai = new Data.Loai
                 {
                     TenLoai = model.TenLoai
                 };
@@ -46,7 +46,7 @@ namespace MyWebApiApp.Controllers
 
         }
         [HttpPut("{id}")]
-        public IActionResult UpdateLoaiById(int id, LoaiModel model)
+        public IActionResult UpdateLoaiById(int id, Models.LoaiModel model)
         {
            var loai = _context.Loais.SingleOrDefault(l => l.MaLoai == id);
             if (loai != null)

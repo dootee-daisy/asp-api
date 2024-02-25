@@ -26,6 +26,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapLoaiEndpoints();
 
 app.Run();
