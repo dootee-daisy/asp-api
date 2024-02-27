@@ -11,6 +11,7 @@ namespace MyWebApiApp.Data
         //#region: bắt đầu một khu vực, DbSet là mô tả cho khu vực đó
         //#endregion: kết thúc khu vực khai báo
         #region DbSet
+        public DbSet<NguoiDung> NguoiDungs { get; set; }
         public DbSet<HangHoa> HangHoas { get; set; }
         public DbSet<Loai> Loais { get; set; }
         public DbSet<DonHang> DonHangs { get; set; }
@@ -39,6 +40,13 @@ namespace MyWebApiApp.Data
                     .WithMany(e => e.DonHangChiTiets)
                     .HasForeignKey(e => e.MaHh)
                     .HasConstraintName("FK_DonHangCT_HangHoa");
+            });
+            modelBuilder.Entity<NguoiDung>(entity =>
+            {
+                entity.HasIndex(e => e.UserName).IsUnique();
+                entity.Property(e => e.HoTen).IsRequired().HasMaxLength(150);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(150);
+
             });
         }
     }
